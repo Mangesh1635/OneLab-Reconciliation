@@ -1,0 +1,7 @@
+import type { BankSettlement } from '../../types/settlement';
+import type { PlatformTransaction } from '../../types/transaction';
+export interface DuplicateInfo{key:string;sourceRow:number;canonicalRow:number;amountPaise:number}
+export function detectBankDuplicates(s:BankSettlement[]):DuplicateInfo[]{const seen=new Map<string,BankSettlement>();const dups:DuplicateInfo[]=[];for(const x of s){if(seen.has(x.settlement_id)){dups.push({key:x.settlement_id,sourceRow:x.sourceRow,canonicalRow:seen.get(x.settlement_id)!.sourceRow,amountPaise:x.amountPaise})}else seen.set(x.settlement_id,x)}return dups}
+export function canonicalSettlements(s:BankSettlement[]):BankSettlement[]{const seen=new Set<string>();return s.filter(x=>{if(seen.has(x.settlement_id))return false;seen.add(x.settlement_id);return true})}
+export function detectPlatformDuplicates(p:PlatformTransaction[]):DuplicateInfo[]{const seen=new Map<string,PlatformTransaction>();const dups:DuplicateInfo[]=[];for(const x of p){const k=`${x.transaction_id}|${x.event_type}`;if(seen.has(k)){dups.push({key:k,sourceRow:x.sourceRow,canonicalRow:seen.get(k)!.sourceRow,amountPaise:x.amountPaise})}else seen.set(k,x)}return dups}
+export function canonicalPlatform(p:PlatformTransaction[]):PlatformTransaction[]{const seen=new Set<string>();return p.filter(x=>{const k=`${x.transaction_id}|${x.event_type}`;if(seen.has(k))return false;seen.add(k);return true})}

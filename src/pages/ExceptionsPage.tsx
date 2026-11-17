@@ -1,0 +1,11 @@
+import { useState } from 'react';
+import { useApp } from '../state';
+import { Card, Badge, Empty } from '../components/ui';
+import { CATEGORY_LABELS } from '../features/reconciliation/exceptionClassifier';
+import { formatINR } from '../utils/currency';
+export default function ExceptionsPage(){const {result}=useApp();const [cat,setCat]=useState('ALL');const [sev,setSev]=useState('ALL');
+ if(!result)return <Empty title="No data loaded" body="Load sample data on the Data Import page first."/>;
+ const rows=result.exceptions.filter(e=>(cat==='ALL'||e.category===cat)&&(sev==='ALL'||e.severity===sev));
+ return <div className="space-y-6"><h1 className="text-2xl font-bold">Discrepancy investigation</h1><p className="text-sm text-slate-500">{result.exceptions.length} exceptions. Each has a unique ID, severity, source dataset and row, reason and recommended action.</p>
+ <div className="flex gap-2"><select value={cat} onChange={e=>setCat(e.target.value)} className="rounded border px-2 py-1 text-sm"><option>ALL</option>{Object.keys(CATEGORY_LABELS).map(k=><option key={k} value={k}>{k}</option>)}</select><select value={sev} onChange={e=>setSev(e.target.value)} className="rounded border px-2 py-1 text-sm"><option>ALL</option><option value="low">low</option><option value="medium">medium</option><option value="high">high</option><option value="critical">critical</option></select></div>
+ <div className="space-y-3">{rows.map(e=><Card key={e.id} className="p-4"><div className="flex flex-wrap justify-between gap-2"><div><span className="font-mono text-sm font-semibold">{e.id}</span> <Badge text={CATEGORY_LABELS[e.category]} tone={e.severity==='high'?'red':e.severity==='medium'?'amber':'blue'}/> <Badge text={e.severity} tone="slate"/></div><span className="tabular-nums font-semibold">{formatINR(e.amountPaise,e.currency)}</span></div><p className="text-sm mt-2">{e.reason}</p><p className="text-xs text-slate-500 mt-1">Transaction: {e.transactionId||'—'} · Settlement: {e.settlementId||'—'} · Source: {e.sourceDataset} row {e.sourceRow||'—'}{e.detail?` · ${e.detail}`:''}</p><p className="text-sm mt-2"><b>Recommended action:</b> {e.recommendation}</p></Card>)}{rows.length===0&&<Empty title="No exceptions match" body="Try a different category or severity filter."/>}</div></div>}

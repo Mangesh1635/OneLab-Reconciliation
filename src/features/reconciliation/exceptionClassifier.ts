@@ -1,0 +1,4 @@
+import type { ExceptionCategory, Severity } from '../../types/reconciliation';
+export const CATEGORY_LABELS:Record<ExceptionCategory,string>={TIMING_DIFFERENCE:'Timing difference',ROUNDING_VARIANCE:'Rounding variance',DUPLICATE_ENTRY:'Duplicate entry',ORPHAN_REFUND:'Orphan refund',PLATFORM_ONLY:'Platform only — no settlement',BANK_ONLY:'Bank only — no platform record',AMOUNT_MISMATCH:'Amount mismatch',INVALID_RECORD:'Invalid record'};
+export const CATEGORY_SEVERITY:Record<ExceptionCategory,Severity>={TIMING_DIFFERENCE:'low',ROUNDING_VARIANCE:'low',DUPLICATE_ENTRY:'medium',ORPHAN_REFUND:'high',PLATFORM_ONLY:'high',BANK_ONLY:'high',AMOUNT_MISMATCH:'high',INVALID_RECORD:'medium'};
+export function classify(category:ExceptionCategory){return{label:CATEGORY_LABELS[category],severity:CATEGORY_SEVERITY[category]}}

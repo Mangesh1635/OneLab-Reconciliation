@@ -1,0 +1,3 @@
+import { daysBetween, monthEnd } from '../../utils/date';
+export function isTimingDifference(platformDate:string,settlementDate:string,reportingMonth:string,graceDays:number):boolean{if(platformDate.slice(0,7)!==reportingMonth)return false;if(settlementDate.slice(0,7)===reportingMonth)return false;const end=monthEnd(reportingMonth);const gap=daysBetween(end,settlementDate);return gap>=1&&gap<=graceDays}
+export function timingExplanation(platformDate:string,settlementDate:string,reportingMonth:string):string{return `Processed ${platformDate} in ${reportingMonth} but settled ${settlementDate}, after the month-end cutoff. This is a normal 1-2 day bank settlement delay, not a missing payment.`}
