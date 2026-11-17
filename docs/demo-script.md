@@ -1,6 +1,6 @@
-# Demo script (60–90 seconds) — video still to be recorded
+# Demo script (60–90 seconds) — video recorded 2026-11-17
 
-> No demo video was recorded in this session (no screen-recording step was available in the workspace). Record the walkthrough below against the running app (`npm run dev`, then Data Import → Load sample datasets).
+> ✅ **Demo video now exists: `docs/demo.mp4`** (also copied to `~/workspace/onelab-reconciliation-demo.mp4` for easy download). Duration **64.1 seconds**, 1280×800, H.264 MP4, 2.3 MB. It is a **real screen recording** of the production build running in headless Chromium (Playwright `recordVideo`), driven through the live app — not generated imagery and not a slideshow. The raw recording was 47.5 s and was slowed 1.35× with ffmpeg (`setpts=1.35*PTS`, no frames added or removed) to reach the 60–90 s range; there is no audio narration.
 
 | Time | Action | Say / show |
 |---|---|---|
